@@ -18,7 +18,7 @@ export function PokemonDescription() {
   };
 
   return (
-    <p className="text-sm text-gray-600 font-medium text-center my-6">
+    <p className="text-sm text-muted-foreground font-medium text-center my-6">
       {getDescription()}
     </p>
   );
