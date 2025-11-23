@@ -18,15 +18,25 @@ export const revalidate = 3600;
 
 // Generate static params for the first 50 Pokemon at build time
 export async function generateStaticParams() {
-  const pokemonList = await getPokemonListServer(50, 0);
+  try {
+    const pokemonList = await getPokemonListServer(50, 0);
 
-  return pokemonList.results.map((pokemon) => {
-    // Extract ID from URL (e.g., "https://pokeapi.co/api/v2/pokemon/1/")
-    const id = pokemon.url.split("/").filter(Boolean).pop() || pokemon.name;
-    return {
-      id: id,
-    };
-  });
+    return pokemonList.results.map((pokemon) => {
+      // Extract ID from URL (e.g., "https://pokeapi.co/api/v2/pokemon/1/")
+      const id = pokemon.url.split("/").filter(Boolean).pop() || pokemon.name;
+      return {
+        id: id,
+      };
+    });
+  } catch (error) {
+    // If static generation fails, return empty array to allow dynamic generation
+    // This prevents build failures when the API is unavailable
+    console.warn(
+      "Failed to generate static params, falling back to dynamic generation:",
+      error
+    );
+    return [];
+  }
 }
 
 export default async function PokemonDetailPage({

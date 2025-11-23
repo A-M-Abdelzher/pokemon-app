@@ -1,28 +1,19 @@
 import type { PokemonListResponse } from "@/lib/types";
 
-// This is a proxy to bypass the CORS policy
-// It is not a secure way to bypass the CORS policy
-// this hot fix is used because the pokeapi.co is not allowing the requests from the browser
-
-const BASE_URLS = {
-  server: "https://cors-anywhere.herokuapp.com/https://pokeapi.co/api/v2",
-  client: "https://pokeapi.co/api/v2",
-};
+const BASE_URL =
+  process.env.NEXT_PUBLIC_POKEAPI_URL || "https://pokeapi.co/api/v2";
 
 export async function getPokemonListServer(
   limit = 20,
   offset = 0
 ): Promise<PokemonListResponse> {
+  // Use direct API URL for server-side requests (no CORS needed)
   const response = await fetch(
-    `${BASE_URLS.server}/pokemon?limit=${limit}&offset=${offset}`,
+    `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`,
     {
       // Cache the response for 1 hour (3600 seconds)
       // This reduces API calls and improves performance
       next: { revalidate: 3600 },
-      headers: {
-        Origin: "https://pokeapi.co",
-        "X-Requested-With": "XMLHttpRequest",
-      },
     }
   );
   if (!response.ok) {
@@ -35,7 +26,7 @@ export async function getPokemonListClient(
   offset = 0
 ): Promise<PokemonListResponse> {
   const response = await fetch(
-    `${BASE_URLS.client}/pokemon?limit=${limit}&offset=${offset}`
+    `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`
   );
   return response.json();
 }
