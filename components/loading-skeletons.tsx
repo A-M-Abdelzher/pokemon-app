@@ -1,3 +1,6 @@
+import { Card } from "./ui/card";
+import { Skeleton } from "./ui/skeleton";
+
 export function CardSkeleton() {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse p-4">
@@ -22,17 +25,19 @@ export function GridSkeleton({ count = 8 }: { count?: number }) {
 
 export function DetailSkeleton() {
   return (
-    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8 animate-pulse">
-      <div className="flex flex-col md:flex-row gap-8">
-        <div className="bg-gray-200 w-full md:w-64 h-64 rounded-lg"></div>
-        <div className="flex-1">
-          <div className="h-10 bg-gray-200 rounded w-3/4 mb-6"></div>
-          <div className="space-y-4">
-            <div className="h-6 bg-gray-200 rounded w-full"></div>
-            <div className="h-6 bg-gray-200 rounded w-full"></div>
-            <div className="h-6 bg-gray-200 rounded w-2/3"></div>
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto space-y-8">
+        <Skeleton className="h-10 w-48" />
+        <Card className="overflow-hidden">
+          <Skeleton className="h-32 w-full" />
+          <div className="p-8 grid md:grid-cols-2 gap-8">
+            <Skeleton className="aspect-square w-full" />
+            <div className="space-y-6">
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-40 w-full" />
+            </div>
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   );

@@ -43,10 +43,10 @@ export default async function PokemonDetailPage({
     notFound();
   }
   return (
-    <div className="bg-linear-to-r from-purple-50 to-rose-100 p-8 min-h-screen">
+    <div className="bg-linear-to-r from-purple-50 to-rose-100 p-4 sm:p-6 md:p-8 min-h-screen">
       <div className="max-w-6xl mx-auto">
         <Link href="/pokemon/pagination-view">
-          <Button variant="outline" className="mb-4">
+          <Button variant="outline" className="mb-4 w-full sm:w-auto">
             <ArrowLeft className="w-4 h-4" />
             Back to list
           </Button>
@@ -55,16 +55,16 @@ export default async function PokemonDetailPage({
         <Card className="bg-white shadow-none overflow-hidden max-w-3xl mx-auto py-0">
           <PokemonDetailHeader pokemon={pokemon} />
           {/* Pokemon Detail Content */}
-          <CardContent className="p-6">
-            <div className="grid grid-cols-12 gap-8">
+          <CardContent className="p-4 sm:p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 lg:gap-8">
               {/* Left Column - Image, Types and Physical Stats */}
-              <div className="space-y-6 lg:col-span-6 px-4">
+              <div className="space-y-4 sm:space-y-6 lg:col-span-6">
                 <PokemonImage pokemon={pokemon} />
                 <PokemonTypes pokemon={pokemon} />
                 <PokemonPhysicalStats pokemon={pokemon} />
               </div>
               {/* Right Column - Details */}
-              <div className="space-y-6 lg:col-span-6 ">
+              <div className="space-y-4 sm:space-y-6 lg:col-span-6">
                 <PokemonBaseStats pokemon={pokemon} />
                 <PokemonAbilities pokemon={pokemon} />
                 <PokemonBaseExperience pokemon={pokemon} />

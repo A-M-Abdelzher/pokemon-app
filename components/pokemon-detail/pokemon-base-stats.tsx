@@ -17,7 +17,7 @@ const STAT_NAMES: Record<string, string> = {
 export function PokemonBaseStats({ pokemon }: PokemonBaseStatsProps) {
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Base Stats</h2>
+      <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Base Stats</h2>
       <div className="space-y-3">
         {pokemon.stats.map((stat) => (
           <div key={stat.stat.name}>

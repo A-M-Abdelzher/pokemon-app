@@ -9,7 +9,7 @@ export function PokemonAbilities({ pokemon }: PokemonAbilitiesProps) {
   console.log(pokemon.abilities[1]);
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Abilities</h2>
+      <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Abilities</h2>
       <div className="space-y-2 font-medium">
         {pokemon.abilities.map((ability) => (
           <div key={ability.ability.name} className="flex items-center gap-2">
