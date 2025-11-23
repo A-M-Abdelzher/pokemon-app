@@ -1,7 +1,6 @@
 "use client";
 
 import { GridSkeleton } from "@/components/loading-skeletons";
-import { ITEMS_PER_PAGE } from "@/lib/constants";
 import { usePokemonInfiniteQuery } from "@/hooks/usePokemonInfiniteQuery";
 import { PokemonGrid } from "@/components/pokemon-grid";
 import { LoadMoreButton } from "@/components/pokemon-loadmore/load-more-button";
@@ -24,7 +23,7 @@ export default function LoadMorePage() {
   return (
     <div className="space-y-4 my-8">
       {isLoading ? (
-        <GridSkeleton count={ITEMS_PER_PAGE} />
+        <GridSkeleton />
       ) : showError ? (
         <ErrorState />
       ) : (
