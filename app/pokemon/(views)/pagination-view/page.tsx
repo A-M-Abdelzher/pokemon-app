@@ -1,6 +1,6 @@
 import { GridSkeleton } from "@/components/loading-skeletons";
 import { PaginationControls } from "@/components/pagination-controls";
-import { PokemonCard } from "@/components/pokemon-card";
+import { PokemonGrid } from "@/components/pokemon-grid";
 import { getPokemonListServer } from "@/lib/api/getPokemonList";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
 import { Suspense } from "react";
@@ -21,14 +21,7 @@ export default async function PaginationView({
   return (
     <div className="my-8">
       <Suspense fallback={<GridSkeleton />}>
-        <div
-          key={`page-${page}`}
-          className="grid animate-fade-in grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
-        >
-          {pokemonList?.results?.map((p) => (
-            <PokemonCard key={p.name} pokemon={p} />
-          ))}
-        </div>
+        <PokemonGrid pokemons={pokemonList?.results} />
       </Suspense>
       <Suspense
         fallback={<div className="h-10 bg-gray-200 rounded w-1/2"></div>}

@@ -1,88 +1,47 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
-import { PokemonCard } from "@/components/pokemon-card";
 import { GridSkeleton } from "@/components/loading-skeletons";
-import { PokemonListItem } from "@/lib/types";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import { getPokemonListClient } from "@/lib/api/getPokemonList";
-import { Button } from "@/components/ui/button";
+import { usePokemonInfiniteQuery } from "@/hooks/usePokemonInfiniteQuery";
+import { PokemonGrid } from "@/components/pokemon-grid";
+import { LoadMoreButton } from "@/components/pokemon-loadmore/load-more-button";
+import { ErrorState } from "@/components/pokemon-loadmore/error-state";
+import { PokemonCount } from "@/components/pokemon-loadmore/pokemon-count";
+import { EndOfListMessage } from "@/components/pokemon-loadmore/end-of-list-message";
 
 export default function LoadMorePage() {
   const {
-    data,
+    allPokemons,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     isLoading,
     isError,
-  } = useInfiniteQuery({
-    queryKey: ["pokemon", "infinite"],
-    queryFn: async ({ pageParam = 0 }) => {
-      const listData = await getPokemonListClient(ITEMS_PER_PAGE, pageParam);
+  } = usePokemonInfiniteQuery();
 
-      return {
-        pokemons: listData.results,
-        nextOffset: pageParam + ITEMS_PER_PAGE,
-      };
-    },
-    getNextPageParam: (lastPage) => lastPage.nextOffset,
-    initialPageParam: 0,
-  });
-
-  const allPokemons = data?.pages.flatMap((page) => page.pokemons) ?? [];
+  const showError = isError && allPokemons.length === 0;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 my-8">
       {isLoading ? (
         <GridSkeleton count={ITEMS_PER_PAGE} />
-      ) : isError && allPokemons.length === 0 ? (
-        <div className="bg-red-50 text-red-600 p-4 rounded-lg border border-red-200 text-center">
-          Failed to load Pokémon. Please try again.
-          <Button onClick={() => window.location.reload()} variant="outline">
-            Retry
-          </Button>
-        </div>
+      ) : showError ? (
+        <ErrorState />
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {allPokemons.map((p: PokemonListItem) => (
-              <PokemonCard key={p.name} pokemon={p} />
-            ))}
-          </div>
+          <PokemonGrid pokemons={allPokemons} />
 
           {hasNextPage && (
-            <div className="flex justify-center mt-12">
-              <Button
-                onClick={() => fetchNextPage()}
-                disabled={isFetchingNextPage}
-                className={
-                  isFetchingNextPage ? "opacity-50 cursor-not-allowed" : ""
-                }
-                variant={isFetchingNextPage ? "ghost" : "default"}
-              >
-                {isFetchingNextPage ? (
-                  <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Loading
-                    more Pokémon...
-                  </>
-                ) : (
-                  "Load More Pokémon"
-                )}
-              </Button>
-            </div>
+            <LoadMoreButton
+              onClick={() => fetchNextPage()}
+              isLoading={isFetchingNextPage}
+            />
           )}
-          <p className="text-center text-muted-foreground">
-            Showing {allPokemons.length} Pokémon
-          </p>
+
+          <PokemonCount count={allPokemons.length} />
+
           {!hasNextPage && allPokemons.length > 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              <p>
-                You&apos;ve reached the end! All {allPokemons.length} Pokémon
-                have been loaded.
-              </p>
-            </div>
+            <EndOfListMessage totalCount={allPokemons.length} />
           )}
         </>
       )}

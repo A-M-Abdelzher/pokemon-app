@@ -16,7 +16,7 @@ export default async function PokemonLayout({
       </div>
       <PokemonDescription />
       <NavLinks />
-      {children}
+      <div className="container mx-auto max-w-6xl">{children}</div>
     </PokemonLayoutWrapper>
   );
 }
