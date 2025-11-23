@@ -1,7 +1,7 @@
 import { ZapIcon } from "lucide-react";
-import { PokemonLayoutWrapper } from "../../components/pokemon-layout-wrapper";
-import { NavLinks } from "../../components/nav-links";
-import { PokemonDescription } from "../../components/pokemon-description";
+import { PokemonLayoutWrapper } from "../../../components/pokemon-layout-wrapper";
+import { NavLinks } from "../../../components/nav-links";
+import { PokemonDescription } from "../../../components/pokemon-description";
 
 export default async function PokemonLayout({
   children,

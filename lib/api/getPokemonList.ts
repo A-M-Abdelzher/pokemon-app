@@ -14,9 +14,9 @@ export async function getPokemonList(
   const response = await fetch(
     `${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`,
     {
-      // Cache the response for 5 minutes (300 seconds)
+      // Cache the response for 1 hour (3600 seconds)
       // This reduces API calls and improves performance
-      next: { revalidate: 300 },
+      next: { revalidate: 3600 },
       headers: {
         Origin: "https://pokeapi.co",
         "X-Requested-With": "XMLHttpRequest",

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { PokemonListItem } from "@/lib/types";
 import { Card } from "@/components/ui/card";
 import { POKEMON_IMAGE_BASE_URL } from "@/lib/constants";
+import { formatPokemonId } from "@/lib/utils";
 
 /**
  * Props for the PokemonCard component
@@ -49,7 +50,7 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
             {pokemon.name}
           </h3>
           <p className="text-sm text-muted-foreground font-medium">
-            #{pokemonId.toString().padStart(3, "0")}
+            {formatPokemonId(Number(pokemonId))}
           </p>
         </div>
       </Card>
