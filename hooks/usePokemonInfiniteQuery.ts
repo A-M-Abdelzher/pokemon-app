@@ -9,9 +9,9 @@ interface PokemonPage {
 }
 
 export function usePokemonInfiniteQuery() {
-  const query = useInfiniteQuery<PokemonPage>({
+  const query = useInfiniteQuery({
     queryKey: ["pokemon", "infinite"],
-    queryFn: async ({ pageParam = 0 }) => {
+    queryFn: async ({ pageParam }: { pageParam: number }) => {
       const listData = await getPokemonListClient(ITEMS_PER_PAGE, pageParam);
 
       return {
@@ -19,15 +19,15 @@ export function usePokemonInfiniteQuery() {
         nextOffset: pageParam + ITEMS_PER_PAGE,
       };
     },
-    getNextPageParam: (lastPage) => lastPage.nextOffset,
+    getNextPageParam: (lastPage: PokemonPage) => lastPage.nextOffset,
     initialPageParam: 0,
   });
 
-  const allPokemons = query.data?.pages.flatMap((page) => page.pokemons) ?? [];
+  const allPokemons =
+    query.data?.pages.flatMap((page: PokemonPage) => page.pokemons) ?? [];
 
   return {
     ...query,
     allPokemons,
   };
 }
-
