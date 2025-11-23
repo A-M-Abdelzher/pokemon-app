@@ -1,5 +1,5 @@
 import { getPokemonDetail } from "@/lib/api/getPokemonDetail";
-import { getPokemonList } from "@/lib/api/getPokemonList";
+import { getPokemonListServer } from "@/lib/api/getPokemonList";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -18,7 +18,7 @@ export const revalidate = 3600;
 
 // Generate static params for the first 50 Pokemon at build time
 export async function generateStaticParams() {
-  const pokemonList = await getPokemonList(50, 0);
+  const pokemonList = await getPokemonListServer(50, 0);
 
   return pokemonList.results.map((pokemon) => {
     // Extract ID from URL (e.g., "https://pokeapi.co/api/v2/pokemon/1/")

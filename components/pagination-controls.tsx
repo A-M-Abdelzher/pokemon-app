@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ITEMS_PER_PAGE } from "@/lib/constants";
 
 interface PaginationControlsProps {
   currentPage: number;
@@ -73,61 +74,66 @@ export function PaginationControls({
   };
 
   return (
-    <div className="flex justify-center items-center gap-2 pt-8 pb-4">
-      <Button
-        onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        variant="outline"
-        size="default"
-        aria-label="Previous page"
-      >
-        <ChevronLeft className="w-4 h-4" />
-        <span className="">Previous</span>
-      </Button>
+    <>
+      <div className="flex justify-center items-center gap-2 pt-8 pb-4">
+        <Button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          variant="outline"
+          size="default"
+          aria-label="Previous page"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          <span className="">Previous</span>
+        </Button>
 
-      <div className="flex items-center gap-1">
-        {getPageNumbers().map((page, index) => {
-          if (page === "ellipsis-start" || page === "ellipsis-end") {
+        <div className="flex items-center gap-1">
+          {getPageNumbers().map((page, index) => {
+            if (page === "ellipsis-start" || page === "ellipsis-end") {
+              return (
+                <div
+                  key={`ellipsis-${index}`}
+                  className="px-2 text-muted-foreground"
+                >
+                  <MoreHorizontal className="w-4 h-4" />
+                </div>
+              );
+            }
+
+            const pageNum = page as number;
+            const isActive = pageNum === currentPage;
+
             return (
-              <div
-                key={`ellipsis-${index}`}
-                className="px-2 text-muted-foreground"
+              <Button
+                key={pageNum}
+                onClick={() => handlePageChange(pageNum)}
+                variant={isActive ? "default" : "outline"}
+                size="icon"
+                className={cn(
+                  "w-10 h-10",
+                  isActive && "bg-primary text-primary-foreground"
+                )}
               >
-                <MoreHorizontal className="w-4 h-4" />
-              </div>
+                {pageNum}
+              </Button>
             );
-          }
+          })}
+        </div>
 
-          const pageNum = page as number;
-          const isActive = pageNum === currentPage;
-
-          return (
-            <Button
-              key={pageNum}
-              onClick={() => handlePageChange(pageNum)}
-              variant={isActive ? "default" : "outline"}
-              size="icon"
-              className={cn(
-                "w-10 h-10",
-                isActive && "bg-primary text-primary-foreground"
-              )}
-            >
-              {pageNum}
-            </Button>
-          );
-        })}
+        <Button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          variant="outline"
+          size="default"
+          aria-label="Next page"
+        >
+          <span className="">Next</span>
+          <ChevronRight className="w-4 h-4" />
+        </Button>
       </div>
-
-      <Button
-        onClick={() => handlePageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        variant="outline"
-        size="default"
-        aria-label="Next page"
-      >
-        <span className="">Next</span>
-        <ChevronRight className="w-4 h-4" />
-      </Button>
-    </div>
+      <p className="text-center text-muted-foreground">
+        Page {currentPage} of {totalPages} ({ITEMS_PER_PAGE} Pokémon shown)
+      </p>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 import { GridSkeleton } from "@/components/loading-skeletons";
 import { PaginationControls } from "@/components/pagination-controls";
 import { PokemonCard } from "@/components/pokemon-card";
-import { getPokemonList } from "@/lib/api/getPokemonList";
+import { getPokemonListServer } from "@/lib/api/getPokemonList";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
 import { Suspense } from "react";
 
@@ -15,7 +15,7 @@ export default async function PaginationView({
   const params = await searchParams;
   const page = Number(params.page) || 1;
   const offset = (page - 1) * ITEMS_PER_PAGE;
-  const pokemonList = await getPokemonList(ITEMS_PER_PAGE, offset);
+  const pokemonList = await getPokemonListServer(ITEMS_PER_PAGE, offset);
   const totalPages = Math.ceil(pokemonList.count / ITEMS_PER_PAGE);
 
   return (
